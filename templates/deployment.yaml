@@ -1,0 +1,64 @@
+---
+# Source: assurity-app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-service-dev-v1.0.3
+  labels:
+    helm.sh/chart: assurity-app-0.1.0
+    app.kubernetes.io/name: helloworld-service-dev-v1.0.3
+    app.kubernetes.io/instance: helloworld-service-dev-v1.0.3
+    app: helloworld-service-dev-v1.0.3
+    version: "v1.0.3"
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: helloworld-service-dev-v1.0.3
+      app.kubernetes.io/instance: helloworld-service-dev-v1.0.3
+      app: helloworld-service-dev-v1.0.3
+      version: "v1.0.3"
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app.kubernetes.io/name: helloworld-service-dev-v1.0.3
+        app.kubernetes.io/instance: helloworld-service-dev-v1.0.3
+        app: helloworld-service-dev-v1.0.3
+        version: "v1.0.3"
+    spec:
+      volumes:
+        - name: creds
+          secret:
+            secretName: assurity-guru
+      securityContext:
+        {}
+      imagePullSecrets:
+        - name: default-quay-openshift
+      containers:
+        - name: assurity-app
+          envFrom:
+          - configMapRef:
+              name: helloworld-service-dev-config 
+          securityContext:
+            {}
+          image: "devregistry.apps.oscdev.assurity.local/openshift_assurity-sandbox/helloworld-service:102023"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 150m
+              memory: 150Mi
+          volumeMounts:
+            - mountPath: /opt/app-root/app/AssurityGuru.dll
+              name: creds
+              readOnly: true
+              subPath: AssurityGuru.dll

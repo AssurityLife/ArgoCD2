@@ -1,0 +1,30 @@
+---
+# Source: assurity-app/templates/hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: helloworld-service-dev-v1.0.3
+  labels:
+    helm.sh/chart: assurity-app-0.1.0
+    app.kubernetes.io/name: helloworld-service-dev-v1.0.3
+    app.kubernetes.io/instance: helloworld-service-dev-v1.0.3
+    app: helloworld-service-dev-v1.0.3
+    version: "v1.0.3"
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: helloworld-service-dev-v1.0.3
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: 80

@@ -1,0 +1,23 @@
+---
+# Source: assurity-app/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "helloworld-service-dev-v1.0.3-test-connection"
+  labels:
+    helm.sh/chart: assurity-app-0.1.0
+    app.kubernetes.io/name: helloworld-service-dev-v1.0.3
+    app.kubernetes.io/instance: helloworld-service-dev-v1.0.3
+    app: helloworld-service-dev-v1.0.3
+    version: "v1.0.3"
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['helloworld-service-dev-v1.0.3:8082']
+  restartPolicy: Never
