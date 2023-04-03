@@ -44,7 +44,7 @@ spec:
               name: helloworld-service-dev-config 
           securityContext:
             {}
-          image: "devregistry.apps.oscdev.assurity.local/openshift_assurity-sandbox/helloworld-service:102023"
+          image: "devregistry.apps.oscdev.assurity.local/openshiftdev_assurity-sandbox/helloworld-service:102023"
           imagePullPolicy: Always
           ports:
             - name: http
