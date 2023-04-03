@@ -36,7 +36,7 @@ spec:
       securityContext:
         {}
       imagePullSecrets:
-        - name: default-quay-openshift
+        - name: default-quay-openshiftdev
       containers:
         - name: assurity-app
           envFrom:
